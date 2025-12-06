@@ -1,3 +1,5 @@
+// Day 1 Part 1: Secret Entrance
+
 import { readFileSync } from "fs";
 
 function secretEntrence(
@@ -11,11 +13,9 @@ function secretEntrence(
 
   for (const d of dialTurns) {
     const dir = d.slice(0, 1);
-    const turns = Number(d.slice(1));
-    curr =
-      dir === "L"
-        ? trueModulo(curr - turns, positions)
-        : trueModulo(curr + turns, positions);
+    let turns = Number(d.slice(1));
+    turns = dir === "L" ? -turns : turns;
+    curr = trueModulo(curr + turns, positions);
     curr === 0 ? count++ : count + 0;
   }
   return count;
