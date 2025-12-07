@@ -1,4 +1,4 @@
-// Day 2 Part 1: Gift Shop
+// Day 2 Part 2: Gift Shop
 
 import { readFileSync } from "fs";
 
@@ -7,12 +7,9 @@ function giftShop(input: string): number {
   let sum = 0;
   for (const r of idRanges) {
     const startEnd = r.split("-");
-    if (startEnd[0].length % 2 !== 0 && startEnd[1].length % 2 !== 0) continue;
-
     const start = Number(startEnd[0]);
     const end = Number(startEnd[1]);
     for (let i = start; i <= end; i++) {
-      if (digitCount(i) % 2 !== 0) continue;
       if (isInvalid(i)) {
         sum += i;
       }
@@ -24,16 +21,15 @@ function giftShop(input: string): number {
 
 function isInvalid(n: number): boolean {
   const nStr = String(n);
-  const digits = nStr.length / 2;
-  const first = nStr.slice(0, digits);
-  const second = nStr.slice(digits);
-  if (first === second) return true;
+  const half = Math.floor(nStr.length / 2);
+  for (let i = half; i > 0; i--) {
+    const sub = nStr.slice(0, i);
+    const rep = sub.repeat(Math.floor(nStr.length / i));
+    if (rep === nStr) {
+      return true;
+    }
+  }
   return false;
-}
-
-function digitCount(n: number): number {
-  if (n === 0) return 1;
-  return Math.floor(Math.log10(Math.abs(n))) + 1;
 }
 
 function readInput(input: string): string[] {
