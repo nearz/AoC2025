@@ -19,11 +19,7 @@ function giftShop(input: string): number {
     }
   }
 
-  let sum = 0;
-  for (const inv of invalids) {
-    sum += inv;
-  }
-  return sum;
+  return invalids.reduce((sum, n) => sum + n, 0);
 }
 
 function isInvalid(n: number): boolean {
