@@ -1,26 +1,35 @@
 // Day 7 Part 2: Laboratories
-// TODO: Maybe enumerate paths with DFS?
 
 import { readFileSync } from "fs";
 
 function laboratories(inputFile: string): number {
   const map = readInput(inputFile);
-  let track: number[] = [map[0].indexOf("S")];
-  let sum = 0;
+  const start = map[0].indexOf("S");
+  let track: Map<number, number> = new Map();
+  track.set(start, 1);
+
   for (let i = 1; i < map.length; i++) {
-    const tempTrack: number[] = [];
-    for (const t of track) {
-      if (map[i][t] === "^") {
-        sum++;
-        tempTrack.push(t + 1);
-        tempTrack.push(t - 1);
+    const tempTrack: Map<number, number> = new Map();
+
+    console.log(track);
+
+    for (const [pos, cnt] of track) {
+      if (map[i][pos] === "^") {
+        tempTrack.set(pos + 1, (tempTrack.get(pos + 1) ?? 0) + cnt);
+        tempTrack.set(pos - 1, (tempTrack.get(pos - 1) ?? 0) + cnt);
       } else {
-        tempTrack.push(t);
+        tempTrack.set(pos, (tempTrack.get(pos) ?? 0) + cnt);
       }
     }
+
     track = tempTrack;
   }
-  return sum;
+
+  let tempSum = 0;
+  for (const t of track.values()) {
+    tempSum += t;
+  }
+  return tempSum;
 }
 
 function readInput(input: string): string[][] {
@@ -34,7 +43,7 @@ function readInput(input: string): string[][] {
 }
 
 function main() {
-  console.log(laboratories("input.txt"));
+  console.log(laboratories("test.txt"));
 }
 
 main();
